@@ -210,7 +210,8 @@
     background: rgba(42,10,46,.94);
     border: 4px solid #ff9ecb;
     box-shadow: 0 0 0 4px var(--deep), 0 0 30px rgba(255,95,162,.6), inset 0 0 0 2px #50163f;
-    padding: 28px 22px; text-align: center;
+    padding: 24px 22px; text-align: center;
+    max-height: 92vh; overflow-y: auto;
     transition: transform .7s steps(8); pointer-events: none;
   }
   #finalMessage.show { transform: translate(-50%, -50%) scale(1); }
@@ -227,6 +228,23 @@
   }
   #finalMessage .sig {
     margin-top: 14px; color: #ff9ecb; font-size: 1.4rem;
+  }
+  .photoFrame {
+    display: inline-block; width: 80%; max-width: 290px;
+    background: #fff0f6; padding: 9px 9px 13px; margin: 2px 0 20px;
+    border: 4px solid #ff9ecb;
+    box-shadow: 0 0 0 4px var(--deep), 6px 6px 0 rgba(0,0,0,.4);
+    transform: rotate(-3deg);
+  }
+  .photoFrame img {
+    display: block; width: 100%;
+    border: 2px solid #50163f;
+    image-rendering: auto;            /* override pixelated bg rule untuk gambar */
+  }
+  .photoFrame .cap {
+    font-family: 'Press Start 2P', monospace;
+    font-size: .55rem; color: var(--deep);
+    margin-top: 11px; letter-spacing: 1px; line-height: 1.4;
   }
   @keyframes glow {
     0%,100% { filter: drop-shadow(0 0 6px #ffe14d); }
@@ -299,6 +317,10 @@
   </div>
 
   <div id="finalMessage">
+    <div class="photoFrame">
+      <img src="us.jpg" alt="us in the snow">
+      <div class="cap">❄️ OUR STORY ♥</div>
+    </div>
     <h1>★ YOU WIN ★<br>LOVE +∞ 💖</h1>
     <p>My favorite chapter in a story<br>I never want to end. ❤️</p>
     <div class="sig">— Forever yours, for Mirsha Atia 🌹</div>
