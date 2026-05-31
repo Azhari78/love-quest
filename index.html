@@ -495,8 +495,11 @@
 
   // ---- background music: Fajar Noor - Tuhan Tahu Kita Saling Cinta ----
   const SONG_ID = "HKqnBYaEYXc";
+  // mula terus di chorus "Haruskah ku lepaskan atau ku pertahankan" lalu main sampai habis.
+  // tukar nilai detik ni kalau nak laras (cth 52 = awal sikit, 64 = lewat sikit)
+  const SONG_START = 58;
   const musicBtn = document.getElementById("musicBtn");
-  let ytPlayer, ytReady = false, wantPlay = false, musicOn = false;
+  let ytPlayer, ytReady = false, wantPlay = false, musicOn = false, firstPlay = true;
 
   (function loadYT(){
     const tag = document.createElement("script");
@@ -508,11 +511,16 @@
     ytPlayer = new YT.Player("ytplayer", {
       height: "2", width: "2", videoId: SONG_ID,
       playerVars: {
-        autoplay: 0, controls: 0, loop: 1, playlist: SONG_ID,
+        autoplay: 0, controls: 0, start: SONG_START,
         playsinline: 1, modestbranding: 1, rel: 0,
       },
       events: {
         onReady: (e) => { ytReady = true; e.target.setVolume(40); if (wantPlay) playMusic(); },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.ENDED) {     // habis -> ulang dari chorus, bukan dari awal
+            try { ytPlayer.seekTo(SONG_START, true); ytPlayer.playVideo(); } catch(err){}
+          }
+        },
       },
     });
   };
@@ -523,7 +531,11 @@
   }
   function playMusic(){
     if (!ytReady) { wantPlay = true; return; }
-    try { ytPlayer.unMute(); ytPlayer.setVolume(40); ytPlayer.playVideo(); musicOn = true; refreshMusicBtn(); } catch(e){}
+    try {
+      if (firstPlay) { ytPlayer.seekTo(SONG_START, true); firstPlay = false; }
+      ytPlayer.unMute(); ytPlayer.setVolume(40); ytPlayer.playVideo();
+      musicOn = true; refreshMusicBtn();
+    } catch(e){}
   }
   musicBtn.addEventListener("click", () => {
     if (!ytReady) { playMusic(); return; }
